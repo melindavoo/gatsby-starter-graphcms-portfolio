@@ -1,6 +1,7 @@
 import React from 'react'
 import { graphql, Link } from 'gatsby'
 import Img from 'gatsby-image'
+import Comments from '../components/comments'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import { useQuery, gql } from '@apollo/client'
 
@@ -11,6 +12,7 @@ const COMMENTS_QUERY = gql`
       content
       email
       name
+      createdAt
     }
   }
 `
@@ -46,7 +48,7 @@ function BlogPostTemplate({
         </div>
       </header>
       <div
-        className="divide-y lg:divide-y-0 divide-gray-200 lg:grid lg:grid-cols-4 lg:col-gap-6 pb-16 lg:pb-20"
+        className="lg:grid lg:grid-cols-4 lg:col-gap-6 pb-16 lg:pb-20"
         style={{ gridTemplateRows: 'auto 1fr' }}
       >
         <dl className="pt-6 pb-10 lg:pt-11 lg:border-b lg:border-gray-200">
@@ -88,18 +90,11 @@ function BlogPostTemplate({
             <p>{commentsLoading ? 'Loading ...' : null}</p>
             <p>{commentsError ? `Error loading post comments! ${commentsError}` : null}</p>
             {data?.comments.length ? (
-              <ul>
-                {data.comments.map((comment) => (
-                  <div>
-                    <p>{comment.email}</p>
-                    <p>{comment.name}</p>
-                    <p>{comment.content}</p>
-                  </div>
-                ))}
-              </ul>
+              <Comments comments={data.comments} commentsError={commentsError} commentsLoading={commentsLoading} />
             ) : (
               <p>No comments (yet).</p>
             )}
+
           </div>
         </div>
         <footer className="text-sm font-medium leading-5 divide-y divide-gray-200 lg:col-start-1 lg:row-start-2">
