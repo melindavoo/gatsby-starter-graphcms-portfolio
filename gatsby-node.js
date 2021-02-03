@@ -73,7 +73,7 @@ exports.createPages = async ({ actions: { createPage }, graphql }) => {
 
   if (data.errors) throw data.errors
 
-  data.posts.edges.forEach(({ nextPost, page, previousPost }) => {
+  data.posts.edges.forEach(({ id, nextPost, page, previousPost }) => {
     createPage({
       component: path.resolve('./src/templates/blog-post.js'),
       context: {

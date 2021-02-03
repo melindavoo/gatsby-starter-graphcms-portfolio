@@ -7,7 +7,7 @@ import { useQuery, gql } from '@apollo/client'
 
 const COMMENTS_QUERY = gql`
   query PostCommentsQuery($id: ID!) {
-    comments(where: { post: { id: $id } }) {
+    comments(where: { post: { id: $id } }, orderBy: createdAt_DESC) {
       id
       content
       email
@@ -90,7 +90,7 @@ function BlogPostTemplate({
             <p>{commentsLoading ? 'Loading ...' : null}</p>
             <p>{commentsError ? `Error loading post comments! ${commentsError}` : null}</p>
             {data?.comments.length ? (
-              <Comments comments={data.comments} commentsError={commentsError} commentsLoading={commentsLoading} />
+              <Comments comments={data.comments} postId={page.remoteId} commentsError={commentsError} commentsLoading={commentsLoading} />
             ) : (
               <p>No comments (yet).</p>
             )}
